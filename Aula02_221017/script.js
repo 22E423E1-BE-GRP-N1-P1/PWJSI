@@ -14,7 +14,6 @@ aqui dentro
 idade = 90;
 console.log(nome);
 console.log(idade);
-
 idade = "Noventa";
 console.log(idade); */
 
