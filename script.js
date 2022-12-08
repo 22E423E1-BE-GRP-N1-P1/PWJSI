@@ -1,12 +1,76 @@
 const FATOR = 5;
+let casaAtual = 0;
+
 function marcarCasa(event, numCasa) {
-  // HTMLElement
-  // const tile = document.getElementById(`tile${numCasa}`);
-  const tile = event.target;
-  // bloqueando a peça
-  revelarCasa(tile);
-  /* tile.classList = 'tile_disabled'; */
-  verificarVizinhos(numCasa);
+  if (
+      (numCasa === 1 && casaAtual === 0) ||
+      (verificarProximaCasa(numCasa) && casaAtual !== 0)
+  ) {
+    // HTMLElement
+    // const tile = document.getElementById(`tile${numCasa}`);
+    const tile = event.target;
+    // bloqueando a peça
+    revelarCasa(tile);
+    /* tile.classList = 'tile_disabled'; */
+    verificarVizinhos(numCasa);
+    casaAtual = numCasa;
+  }
+  
+}
+
+function verificarProximaCasa(numCasa){
+   if (verificarEsquerdaTopo(casaAtual)) {
+    return numCasa === casaAtual + 1 ||
+      numCasa === casaAtual + 1 + FATOR ||
+      numCasa === casaAtual + FATOR;
+  } else if (verificarEsquerdaBase(casaAtual)) {
+    revelarVizinho(numCasa - FATOR);
+    revelarVizinho(numCasa + 1 - FATOR);
+    revelarVizinho(numCasa + 1);
+  } else if (verificarDireitaTopo(casaAtual)) {
+    revelarVizinho(numCasa - 1);
+    revelarVizinho(numCasa - 1 + FATOR);
+    revelarVizinho(numCasa + FATOR);
+  } else if (verificarDireitaBase(casaAtual)) {
+    revelarVizinho(numCasa - 1);
+    revelarVizinho(numCasa - 1 - FATOR);
+    revelarVizinho(numCasa - FATOR);
+  } else if (verificarBordaEsquerda(casaAtual)) {
+    revelarVizinho(numCasa - FATOR);
+    revelarVizinho(numCasa + 1 - FATOR);
+    revelarVizinho(numCasa + 1);
+    revelarVizinho(numCasa + 1 + FATOR);
+    revelarVizinho(numCasa + FATOR);
+  } else if (verificarBordaDireita(casaAtual)) {
+    revelarVizinho(numCasa - FATOR);
+    revelarVizinho(numCasa - 1 - FATOR);
+    revelarVizinho(numCasa - 1);
+    revelarVizinho(numCasa - 1 + FATOR);
+    revelarVizinho(numCasa + FATOR);
+  } else if (verificarBordaTopo(casaAtual)) {
+    revelarVizinho(numCasa - 1);
+    revelarVizinho(numCasa - 1 + FATOR);
+    revelarVizinho(numCasa + FATOR);
+    revelarVizinho(numCasa + 1 + FATOR);
+    revelarVizinho(numCasa + 1);
+  } else if (verificarBordaBase(casaAtual)) {
+    revelarVizinho(numCasa - 1);
+    revelarVizinho(numCasa - 1 - FATOR);
+    revelarVizinho(numCasa - FATOR);
+    revelarVizinho(numCasa + 1 - FATOR);
+    revelarVizinho(numCasa + 1);
+  } else {
+    revelarVizinho(numCasa - 1 - FATOR);
+    revelarVizinho(numCasa - FATOR);
+    revelarVizinho(numCasa + 1 - FATOR);
+    revelarVizinho(numCasa + 1);
+    revelarVizinho(numCasa - 1);
+    revelarVizinho(numCasa + FATOR);
+    revelarVizinho(numCasa - FATOR);
+    revelarVizinho(numCasa - 1 + FATOR);
+    revelarVizinho(numCasa + FATOR);
+    revelarVizinho(numCasa + 1 + FATOR);
+  }
 }
 // const jogo1 = [9, 10, 6, 2];
 function verificarParede(numCasa) {
@@ -21,16 +85,15 @@ function verificarParede(numCasa) {
           numCasa === 18 || 
           numCasa === 19;
 
-  return false;
-  // return jogo1;
+  return jogo1;
 }
 
 function revelarCasa(tile) {
-  tile.disabled = false;
+  tile.disabled = true;
 }
 
 function revelarVizinho(numVizinho) {
-  if (!verificarParede(numVizinho)){
+  if (verificarParede(numVizinho)){
     const tile = document.getElementById(`tile${numVizinho}`);
     revelarCasa(tile);
   }
